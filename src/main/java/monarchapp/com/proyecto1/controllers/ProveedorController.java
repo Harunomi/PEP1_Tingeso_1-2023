@@ -16,11 +16,7 @@ public class ProveedorController {
     @Autowired
     ProveedorService proveedorService;
 
-    @GetMapping("/proveedor")
-    public String proveedor(ProveedorEntity proveedor, Model model){
-        model.addAttribute("proveedor",proveedor);
-        return "crearProveedor";
-    }
+
 
     @PostMapping("/crearProveedor")
     public String crearProveedor(ProveedorEntity proveedor,Model model) {
