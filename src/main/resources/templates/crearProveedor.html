@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Crear Proveedor</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">MINGESO Evaluacion 1</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/crearEmpleado">Crear Empleado</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <div class="row">
+    <div class="col-12 mt-5">
+      <h1>Crear Proveedor</h1>
+    </div>
+    <div class="col-12">
+      <form th:action="@{/crearProveedor}" method="post" th:object="${proveedor}">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <lavel >Codigo</lavel>
+            <input th:field="*{codigo}" th:value="*{codigo}"type="text" class="form-control" placeholder="Codigo">
+          </div>
+          <div class="form-group col-md-6">
+            <lavel>Nombre</lavel>
+            <input th:field="*{nombre}" th:value="*{nombre}" type="text" class="form-control" placeholder="Nombre">
+          </div>
+          <div class="form-group col-md-6">
+            <lavel>Categoria</lavel>
+            <input th:field="*{categoria}" th:value="*{categoria}" type="text" class="form-control" placeholder="Categoria">
+          </div>
+          <div class="form-group col-md-6">
+            <lavel>Retencion</lavel>
+            <input th:field="*{retencion}" th:value="*{retencion}" type="text" class="form-control" placeholder="Retencion">
+          </div>
+        </div>
+        <div>
+          <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

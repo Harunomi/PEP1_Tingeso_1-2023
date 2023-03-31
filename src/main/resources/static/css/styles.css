@@ -1,0 +1,52 @@
+/* Estilos para el modo oscuro */
+body {
+    background-color: #121212;
+    color: #FFFFFF;
+}
+
+a {
+    color: #FFFFFF;
+}
+
+/* Estilos para los enlaces visitados */
+a:visited {
+    color: #BBBBBB;
+}
+
+/* Estilos para los encabezados */
+h1, h2, h3, h4, h5, h6 {
+    color: #FFFFFF;
+}
+
+/* Estilos para los botones */
+button, input[type="submit"] {
+    background-color: #333333;
+    color: #FFFFFF;
+}
+
+/* Estilos para los inputs */
+input[type="text"], input[type="password"], input[type="email"], input[type="number"], textarea {
+    background-color: #1E1E1E;
+    color: #FFFFFF;
+    border-color: #555555;
+}
+
+/* Estilos para los placeholders de los inputs */
+::-webkit-input-placeholder {
+    color: #AAAAAA;
+}
+
+:-moz-placeholder {
+    color: #AAAAAA;
+}
+
+::-moz-placeholder {
+    color: #AAAAAA;
+}
+
+:-ms-input-placeholder {
+    color: #AAAAAA;
+}
+
+
+
