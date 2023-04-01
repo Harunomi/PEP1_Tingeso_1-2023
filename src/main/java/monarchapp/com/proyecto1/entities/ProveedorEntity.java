@@ -21,5 +21,5 @@ public class ProveedorEntity {
     private String codigo;
     private String nombre;
     private String categoria;
-    private int retencion;
+    private String retencion;
 }

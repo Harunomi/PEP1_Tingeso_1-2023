@@ -21,9 +21,4 @@ public class IndexController {
         return "crearProveedor";
     }
 
-    @GetMapping("/listaProveedores")
-    public String listaProveedores(ProveedorEntity proveedor, Model model){
-        model.addAttribute("proveedor",proveedor);
-        return "listaProveedores";
-    }
 }

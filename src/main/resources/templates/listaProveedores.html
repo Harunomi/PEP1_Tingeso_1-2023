@@ -7,19 +7,27 @@
 
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">MINGESO Evaluacion 1</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/proveedor">Crear Empleado</a>
-            </li>
-        </ul>
-    </div>
-</nav>
+<div th:replace="navbar.html"></div>
+<div class="container-sm">
+    <table class="table table-dark table-striped table-bordered">
+        <thead class="thead-light">
+        <tr>
+            <th>Codigo</th>
+            <th>Nombre</th>
+            <th>Categoria</th>
+            <th>Retencion</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="proveedor:${proveedor}">
+            <td th:text="${proveedor.codigo}"></td>
+            <td th:text="${proveedor.nombre}"></td>
+            <td th:text="${proveedor.categoria}"></td>
+            <td th:text="${proveedor.retencion}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 </body>
 </html>
