@@ -7,8 +7,21 @@
 
 </head>
 <body>
-<div th:replace="navbar.html"></div>
-
+<div th:replace="navbar.html"></div> <!-- Formato de css y navbar para todas las vistas -->
+<div class="container-sm">
+    <table class="table table-dark table-striped table-bordered">
+        <tbody>
+            <tr>
+                <td><p>Cargar archivos de Acopio (en formato .csv)</p></td>
+                <td>
+                    <a class="btn btn-primary" href="/subirArchivo" role="button">Subir Archivo</a>
+                    <a class="btn btn-danger" href="/vaciarAcopio" role="button">Vaciar base de datos</a>
+                    <p th:text="${mensaje1}"></p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 
 </body>
