@@ -1,6 +1,5 @@
 package monarchapp.com.proyecto1.entities;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,11 +15,11 @@ public class AcopioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true,nullable = false)
-    Long id;
+    private Long id;
     private String fecha;
     private String turno;
     private String proveedor;
-    private Integer KLS;
+    private float kls;
 
     // funcion para calcular el total de dias que tiene un mes
     public int maxDia(String mes){

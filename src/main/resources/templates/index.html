@@ -14,9 +14,21 @@
             <tr>
                 <td><p>Cargar archivos de Acopio (en formato .csv)</p></td>
                 <td>
-                    <a class="btn btn-primary" href="/subirArchivo" role="button">Subir Archivo</a>
+                    <a class="btn btn-primary" href="/subirArchivoA" role="button">Subir Archivo</a>
                     <a class="btn btn-danger" href="/vaciarAcopio" role="button">Vaciar base de datos</a>
+                    <a class="btn btn-primary" href="/listaAcopio" role="button">Ver Acopio</a>
                     <p th:text="${mensaje1}"></p>
+                    <p th:text="${mensaje2}"></p>
+                </td>
+            </tr>
+            <tr>
+                <td><p>Cargar Archivo de Grasas y Solidos (en formato .csv)</p></td>
+                <td>
+                    <a class="btn btn-primary" href="/subirArchivoG" role="button">Subir Archivo</a>
+                    <a class="btn btn-danger" href="/vaciarGrasaSolido" role="button">Vaciar base de datos</a>
+                    <a class="btn btn-primary" href="/listaGrasaSolido" role="button">Ver lista de Grasas y Solidos</a>
+                    <p th:text="${mensaje3}"></p>
+                    <p th:text="${mensaje4}"></p>
                 </td>
             </tr>
         </tbody>

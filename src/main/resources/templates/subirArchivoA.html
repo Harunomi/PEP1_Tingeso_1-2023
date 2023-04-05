@@ -10,9 +10,9 @@
 <div th:replace="navbar.html"></div>
 <h1>Cargar Archivo de Acopio </h1>
 <div class="container">
-  <form th:action="@{/cargar}" method="post" enctype="multipart/form-data">
+  <form th:action="@{/cargarA}" method="post" enctype="multipart/form-data">
     <input type="file" class="form-control" name="acopio" accept = ".csv">
-      <input type="submit" value="Cargar">
+      <input type="submit" value="CargarA">
   </form>
     <h3 th:text="${mensaje}"></h3>
 </div>
