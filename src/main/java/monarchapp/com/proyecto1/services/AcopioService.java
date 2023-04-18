@@ -17,8 +17,6 @@ import java.util.Scanner;
 
 @Service
 public class AcopioService {
-    private String carpeta = "Archivos//";
-
     @Autowired
     private AcopioRepository acopioRepository;
     private AcopioEntity acopioEntity;
@@ -28,13 +26,13 @@ public class AcopioService {
         if(!file.isEmpty()){
             try{
                 byte [] bytes= file.getBytes();
-                Path path = Paths.get(carpeta+file.getOriginalFilename());
+                Path path = Paths.get(file.getOriginalFilename());
                 Files.write(path,bytes);
             }catch(IOException e){
                 throw new RuntimeException(e);
             }
         }
-        archivo = new File(carpeta + file.getOriginalFilename());
+        archivo = new File(file.getOriginalFilename());
         try{
             Scanner obj = new Scanner(archivo);
             while(obj.hasNextLine()){
