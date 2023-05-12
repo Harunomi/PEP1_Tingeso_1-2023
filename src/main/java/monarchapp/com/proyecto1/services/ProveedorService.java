@@ -31,14 +31,6 @@ public class ProveedorService {
         return proveedorRepository.save(proveedor);
     }
 
-    public boolean eliminarProveedor(Long id){
-        try{
-            proveedorRepository.deleteById(id);
-            return true;
-        }catch (Exception err){
-            return false;
-        }
-    }
     public void borrarTodo(){
         proveedorRepository.deleteAll();
     }

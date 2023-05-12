@@ -1,5 +1,6 @@
 package monarchapp.com.proyecto1.services;
 
+import lombok.Generated;
 import monarchapp.com.proyecto1.entities.GrasaSolidoEntity;
 import monarchapp.com.proyecto1.repositories.GrasaSolidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,12 @@ public class GrasaSolidoService {
     private GrasaSolidoEntity grasaSolidoEntity;
     private File archivo;
 
+    @Generated
     public String save(MultipartFile file){
+        // se verifica que el archivo no sea nulo
         if(!file.isEmpty()){
             try{
+                // se obtiene el contenido y la ubicacion
                 byte [] bytes = file.getBytes();
                 Path path = Paths.get(file.getOriginalFilename());
                 Files.write(path,bytes);
@@ -35,13 +39,13 @@ public class GrasaSolidoService {
         archivo = new File(file.getOriginalFilename());
         try {
             Scanner obj = new Scanner(archivo);
-            while(obj.hasNextLine()){
-                grasaSolidoEntity = new GrasaSolidoEntity();
-                String[] partes = obj.nextLine().split(";");
+            while(obj.hasNextLine()){ // buscamos linea a linea
+                grasaSolidoEntity = new GrasaSolidoEntity(); // se crea un objeto de tipo grasaSolido
+                String[] partes = obj.nextLine().split(";"); // se separa por ;
                 grasaSolidoEntity.setProveedor(partes[0]);
                 grasaSolidoEntity.setGrasa(Float.parseFloat(partes[1]));
                 grasaSolidoEntity.setSolido(Float.parseFloat(partes[2]));
-                grasaSolidoRepository.save(grasaSolidoEntity);
+                grasaSolidoRepository.save(grasaSolidoEntity); //se guarda el objeto creado en la base de datos
 
             }
         }catch (FileNotFoundException e){

@@ -1,5 +1,6 @@
 package monarchapp.com.proyecto1.services;
 
+import lombok.Generated;
 import monarchapp.com.proyecto1.entities.AcopioEntity;
 import monarchapp.com.proyecto1.repositories.AcopioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,11 @@ public class AcopioService {
     private AcopioEntity acopioEntity;
     private File archivo;
 
+    @Generated
     public String save(MultipartFile file){
         if(!file.isEmpty()){
             try{
+                // se copia el contenido y la direccion del archivo
                 byte [] bytes= file.getBytes();
                 Path path = Paths.get(file.getOriginalFilename());
                 Files.write(path,bytes);
@@ -36,13 +39,13 @@ public class AcopioService {
         try{
             Scanner obj = new Scanner(archivo);
             while(obj.hasNextLine()){
-                acopioEntity = new AcopioEntity();
-                String[] partes = obj.nextLine().split(";");
+                acopioEntity = new AcopioEntity(); // se crea un objeto de tipo acopio
+                String[] partes = obj.nextLine().split(";"); // se separa por ;
                 acopioEntity.setFecha(partes[0]);
                 acopioEntity.setTurno(partes[1]);
                 acopioEntity.setProveedor(partes[2]);
                 acopioEntity.setKls(Float.parseFloat(partes[3]));
-                acopioRepository.save(acopioEntity);
+                acopioRepository.save(acopioEntity); // se guarda el objeto creado en la base de datos
 
             }
         }catch (FileNotFoundException e){
@@ -52,6 +55,7 @@ public class AcopioService {
     }
 
     public void borrarTodo(){
+
         acopioRepository.deleteAll();
     }
 
