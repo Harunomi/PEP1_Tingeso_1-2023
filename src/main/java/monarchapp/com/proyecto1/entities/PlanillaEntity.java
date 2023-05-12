@@ -31,7 +31,7 @@ public class PlanillaEntity {
     private float pagoLeche;
     private float pagoGrasa;
     private float pagoSolidos;
-    private float bonificacionFrecuencia;
+    private double bonificacionFrecuencia;
     private float dctoVariacionLeche;
     private float dctoVariacionGrasa;
     private float dctoVariacionST;
