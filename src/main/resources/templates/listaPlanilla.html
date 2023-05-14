@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  <title>Planilla de Pago de Leche</title>
+</head>
+<body>
+<div th:replace="navbar.html"></div>
+<div class="container-sm">
+  <table class="table table-dark table-striped table-bordered">
+    <thead class="thead-light">
+    <tr>
+      <th>Quincena</th>
+      <th>Codigo proveedor</th>
+      <th>Nombre proveedor</th>
+      <th>Total KLS leche</th>
+      <th>Dias que envio leche</th>
+      <th>Promedio diario KLS leche</th>
+      <th>%Variacion leche</th>
+      <th>%Grasa</th>
+      <th>%Variacion grasa</th>
+      <th>%Solidos Totales</th>
+      <th>%VariacionST</th>
+      <th>Pago por leche</th>
+      <th>Pago por Grasa</th>
+      <th>Pago por Solidos Totales</th>
+      <th>Bonificacion por Frecuencia</th>
+      <th>Dcto. Variacion Leche</th>
+      <th>Dcto. Variacion Grasa</th>
+      <th>Dcto. Variacion ST</th>
+      <th>Pago TOTAL</th>
+      <th>Monto Retencion</th>
+      <th>Monto Final</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="planilla:${planilla}">
+      <td th:text="${planilla.quincena}"></td>
+      <td th:text="${planilla.codigo}"></td>
+      <td th:text="${planilla.nombre}"></td>
+      <td th:text="${planilla.totalKLS}"></td>
+      <td th:text="${planilla.totalDias}"></td>
+      <td th:text="${planilla.promedioDiarioKLS}"></td>
+      <td th:text="${planilla.variacionLeche}"></td>
+      <td th:text="${planilla.porcentajeGrasa}"></td>
+      <td th:text="${planilla.variacionGrasa}"></td>
+      <td th:text="${planilla.porcentajeSolidos}"></td>
+      <td th:text="${planilla.variacionSolidos}"></td>
+      <td th:text="${planilla.pagoLeche}"></td>
+      <td th:text="${planilla.pagoGrasa}"></td>
+      <td th:text="${planilla.pagoSolidos}"></td>
+      <td th:text="${planilla.bonificacionFrecuencia}"></td>
+      <td th:text="${planilla.dctoVariacionLeche}"></td>
+      <td th:text="${planilla.dctoVariacionGrasa}"></td>
+      <td th:text="${planilla.dctoVariacionST}"></td>
+      <td th:text="${planilla.pagoTotal}"></td>
+      <td th:text="${planilla.montoRetencion}"></td>
+      <td th:text="${planilla.montoFinal}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

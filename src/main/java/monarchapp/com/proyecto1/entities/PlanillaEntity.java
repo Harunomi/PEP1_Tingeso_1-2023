@@ -20,8 +20,8 @@ public class PlanillaEntity {
     private String quincena;
     private String codigo;
     private String nombre;
-    private Integer totalKLS; // total de KLS de leche
     private Integer totalDias; // total de dias que envio leche
+    private float totalKLS; // total de KLS de leche
     private float promedioDiarioKLS;
     private float variacionLeche;
     private float porcentajeGrasa;
@@ -32,10 +32,11 @@ public class PlanillaEntity {
     private float pagoGrasa;
     private float pagoSolidos;
     private double bonificacionFrecuencia;
-    private float dctoVariacionLeche;
-    private float dctoVariacionGrasa;
-    private float dctoVariacionST;
-    private float pagoTotal;
-    private float montoRetencion;
-    private float montoFinal;
+    private double dctoVariacionLeche;
+    private double dctoVariacionGrasa;
+    private double dctoVariacionST;
+    private double pagoTotal;
+    private double pagoAcopioLeche;
+    private double montoRetencion;
+    private double montoFinal;
 }

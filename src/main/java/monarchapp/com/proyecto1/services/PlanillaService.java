@@ -33,13 +33,49 @@ public class    PlanillaService {
     public void borrarTodo(){
         planillaRepository.deleteAll();
     }
+    public int getDia(AcopioEntity acopio){
+        String[] partes = acopio.getFecha().split("/");
+        return Integer.parseInt(partes[2]);
+    }
+    public int totalDiasQuincena(ArrayList<AcopioEntity>acopio){
+        try{
+            int diaInicial = getDia(acopio.get(0));
+            int diaActual;
+            int totalDiasQuincena = 0;
+            if (diaInicial <=15){
+                diaActual = diaInicial;
+                while (diaActual <=15){
+                    totalDiasQuincena++;
+                    diaActual = getDia(acopio.get(totalDiasQuincena));
+                }
+            }else{
+                diaActual = diaInicial;
+                while (diaActual != 1){
+                    totalDiasQuincena++;
+                    diaActual = getDia(acopio.get(totalDiasQuincena));
+                }
+            }
+            return totalDiasQuincena;
+        }catch (IndexOutOfBoundsException e){
+            return 0;
+        }
+
+    }
+
+    public ArrayList<AcopioEntity> acopioPorQuincena(ArrayList<AcopioEntity> entrada,int ultimoIndice){
+        ArrayList<AcopioEntity> salida = new ArrayList<>();
+        for (int i = 0; i < ultimoIndice; i++) {
+            salida.add(entrada.get(i));
+        }
+        return salida;
+    }
 
     public void calcularQuincenas(){
         ArrayList<AcopioEntity> acopio = acopioService.obtenerAcopio();
         ArrayList<GrasaSolidoEntity> grasaSolido = grasaSolidoService.obtenergrasaSolidos();
         ArrayList<ProveedorEntity> proveedores = proveedorService.obtenerProveedores();
         ArrayList<AcopioEntity> quincenaActual;
-        ArrayList<PlanillaEntity> planilla = new ArrayList<PlanillaEntity>();
+        ArrayList<PlanillaEntity> planillas = new ArrayList<  >();
         while(!(acopio.isEmpty())){
             /*
             la logica del programa corresponde a: en primer lugar revisamos el indice del ultimo
@@ -49,14 +85,16 @@ public class    PlanillaService {
             una vez creada cada plantilla de proveedores, se actualiza la lista de acopio eliminando la quincena
             ya calculada
              */
-            int ultimoIndice = acopio.get(0).totalDiasQuincena(acopio);
-            quincenaActual = acopio.get(0).acopioPorQuincena(acopio);
+            int ultimoIndice = totalDiasQuincena(acopio);
+            quincenaActual = acopioPorQuincena(acopio,ultimoIndice);
             for (int i = 0; i < proveedores.size(); i++) {
                 PlanillaEntity planillaActual = new PlanillaEntity();
+                //planillaActual.setQuincena(setQuincenaString(quincenaActual.get(0).getFecha()));
                 planillaActual.setCodigo(proveedores.get(i).getCodigo());
                 planillaActual.setNombre(proveedores.get(i).getNombre());
                 planillaActual.setTotalDias(totalDiasLeche(proveedores.get(i).getCodigo(),quincenaActual));
                 float KLSactual = totalKLS(proveedores.get(i).getCodigo(),quincenaActual,ultimoIndice);
+                planillaActual.setTotalKLS(KLSactual);
                 planillaActual.setPromedioDiarioKLS(KLSactual/planillaActual.getTotalDias());
                 float grasaActual = obtenerGrasa(grasaSolido,proveedores.get(i).getCodigo());
                 float solidoActual = obtenerST(grasaSolido,proveedores.get(i).getCodigo());
@@ -66,10 +104,35 @@ public class    PlanillaService {
                 planillaActual.setPagoSolidos(pagoST(solidoActual,KLSactual));
                 planillaActual.setPagoLeche(pagoPorCategoria(KLSactual,proveedores.get(i).getCategoria()));
                 planillaActual.setBonificacionFrecuencia(bonificacionFrecuencia(acopio,proveedores.get(i).getCodigo(),planillaActual.getPagoLeche()));
-
+                planillaActual.setPagoAcopioLeche(planillaActual.getPagoLeche() +
+                        planillaActual.getPagoGrasa() +
+                        planillaActual.getPagoSolidos() +
+                        planillaActual.getBonificacionFrecuencia());
+                //planillaActual = descuentoVariaciones(planillaActual,planillas);
+                planillaActual.setPagoTotal(planillaActual.getPagoAcopioLeche() -
+                        planillaActual.getDctoVariacionLeche() -
+                        planillaActual.getDctoVariacionGrasa() -
+                        planillaActual.getDctoVariacionST());
+                planillaActual.setMontoRetencion(calcularMontoRetencion(planillaActual.getPagoTotal(),proveedores.get(i).getRetencion()));
+                planillaActual.setMontoFinal(planillaActual.getPagoTotal() - planillaActual.getMontoRetencion());
+                planillas.add(planillaActual);
+                planillaRepository.save(planillaActual);
+                // se repite el proceso para cada proveedor en la misma quincena
 
             }
+            // una vez terminada la quincena, se busca eliminar la actual de la lista de quincenas y repetir el proceso para la siguiente
+            // hasta que la lista de acopio sea vacia
+            acopio = borrarQuincena(acopio,ultimoIndice);
 
+        }
+
+    }
+    public String setQuincenaString(String fecha){
+        String[] partes = fecha.split("/");
+        if (Integer.parseInt(partes[2]) < 16){
+            return partes[0] + "/" + partes[1] + "/" + "1";
+        }else{
+            return partes[0] + "/" + partes[1] + "/" + "2";
         }
 
     }
@@ -171,13 +234,98 @@ public class    PlanillaService {
             return 0;
         }
     }
-
-    public PlanillaEntity descuentoVariaciones(PlanillaEntity planillaActual, ArrayList<PlanillaEntity> planillas){
-        PlanillaEntity salida = new PlanillaEntity();
-        for (int i = planillas.size(); i > 0 ; i = i - 1) {
-            if (planillas.get(i).getCodigo().equals(planillaActual.getCodigo())){
-                
+    public double descuentoVariacionKLS(float variacion, double pagoTotal){
+        if (variacion < 0) {// caso en donde la variacion sea negativa
+            float aux = variacion*-1; // auxiliar para ver los rangos de las variaciones
+            if (aux >= 0 && aux < 9){
+                return 0;
+            } else if (aux >= 9 && aux < 26) {
+                return 0.12 * pagoTotal;
+            } else if (aux >= 26 && aux < 41) {
+                return 0.2 * pagoTotal;
+            } else {
+                return 0.3 * pagoTotal;
             }
         }
+        // en caso de no haber una variacion negativa, entonces retornamos 0
+        return 0;
+    }
+
+    public double descuentoVariacionGrasa(float variacion,double pagoTotal){
+        if (variacion < 0){
+            float aux = variacion*-1;
+            if(aux >= 0 && aux < 16){
+                return 0;
+            } else if (aux >=16 && aux < 26) {
+                return 0.12 * pagoTotal;
+            } else if (aux >= 26 && aux < 41) {
+                return 0.2 * pagoTotal;
+            }else{
+                return 0.3 * pagoTotal;
+            }
+        }
+        return 0;
+    }
+
+    public double descuentoVariacionST(float variacion, double pagoTotal){
+        if (variacion < 0){
+            float aux = variacion*-1;
+            if(aux >= 0 && aux < 7){
+                return 0;
+            } else if (aux >=7 && aux < 13) {
+                return 0.18 * pagoTotal;
+            } else if (aux >= 13 && aux < 36) {
+                return 0.27 * pagoTotal;
+            }else{
+                return 0.45 * pagoTotal;
+            }
+        }
+        return 0;
+    }
+
+
+    public PlanillaEntity descuentoVariaciones(PlanillaEntity planillaActual, ArrayList<PlanillaEntity> planillas){
+        PlanillaEntity planillaAnterior = new PlanillaEntity();
+        int aux = 0;
+        for (int i = planillas.size(); i > 0 ; i = i - 1) {
+            // recorro la plantilla desde el final hasta el comienzo en busca del a primera aparicion del proveedor en la plantilla
+            if (planillas.get(i-1).getCodigo().equals(planillaActual.getCodigo())){
+                planillaAnterior = planillas.get(i-1);
+                aux = 1; // bandera que indica que encontramos una planilla en la lista de planillas
+                break;
+            }
+        }
+        if (aux == 1) { // caso donde exista una plantilla anterior para poder comparar las v ariaciones de los porcentajes de leche, grasa y solidos totales.
+            planillaActual.setVariacionLeche((planillaActual.getTotalKLS() - planillaAnterior.getTotalKLS()) / planillaAnterior.getTotalKLS() * 100);
+            planillaActual.setVariacionGrasa((planillaActual.getPorcentajeGrasa() - planillaAnterior.getPorcentajeGrasa()) / planillaAnterior.getPorcentajeGrasa() * 100);
+            planillaActual.setVariacionSolidos((planillaActual.getPorcentajeSolidos() - planillaAnterior.getPorcentajeSolidos()) / planillaAnterior.getPorcentajeSolidos() * 100);
+            planillaActual.setDctoVariacionLeche(descuentoVariacionKLS(planillaActual.getVariacionLeche(),planillaActual.getPagoAcopioLeche()));
+            planillaActual.setDctoVariacionGrasa(descuentoVariacionGrasa(planillaActual.getVariacionGrasa(),planillaActual.getPagoAcopioLeche()));
+            planillaActual.setDctoVariacionST(descuentoVariacionST(planillaActual.getVariacionSolidos(),planillaActual.getPagoAcopioLeche()));
+        }else{ // caso en donde no exista na una plantilla anterior para comparar, entonces se definen todas las variaciones como 0 ( puesto qiue no existen otra para comparar)
+            planillaActual.setVariacionLeche(0);
+            planillaActual.setVariacionGrasa(0);
+            planillaActual.setVariacionSolidos(0);
+            planillaActual.setDctoVariacionLeche(0);
+            planillaActual.setDctoVariacionGrasa(0);
+            planillaActual.setDctoVariacionST(0);
+        }
+        return planillaActual;
+
+    }
+
+    public double calcularMontoRetencion(double pagoTotal, String retencion){
+        if ((pagoTotal > 950000) && retencion.equals("Si")){
+            return pagoTotal * 0.13;
+        }else{
+            return 0;
+        }
+    }
+    public ArrayList<AcopioEntity> borrarQuincena(ArrayList<AcopioEntity> acopio, int inicio){
+        ArrayList<AcopioEntity> salida = new ArrayList<>();
+        for (int i = inicio+1; i < acopio.size() ; i++) {
+            salida.add(acopio.get(i));
+        }
+        return salida;
     }
 }
