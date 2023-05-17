@@ -16,22 +16,8 @@ public class ProveedorService {
         return (ArrayList<ProveedorEntity>) proveedorRepository.findAll();
     }
 
-    public ProveedorEntity buscarPorCodigo(String codigo){
-        ArrayList<ProveedorEntity> proveedores = (ArrayList<ProveedorEntity>) proveedorRepository.findAll();
-        for (int i = 0; i < proveedores.size(); i++){
-            if (proveedores.get(i).getCodigo().equals(codigo)){
-                return proveedores.get(i);
-            }
-        }
-        ProveedorEntity o = null;
-        return o;
+    public void guardarProveedor(ProveedorEntity proveedor){
+        proveedorRepository.save(proveedor);
     }
 
-    public ProveedorEntity guardarProveedor(ProveedorEntity proveedor){
-        return proveedorRepository.save(proveedor);
-    }
-
-    public void borrarTodo(){
-        proveedorRepository.deleteAll();
-    }
 }

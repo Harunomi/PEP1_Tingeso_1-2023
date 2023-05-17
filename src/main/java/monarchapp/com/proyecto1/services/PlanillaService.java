@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import javax.annotation.processing.Generated;
+
 @Service
 public class    PlanillaService {
     @Autowired
@@ -44,15 +46,15 @@ public class    PlanillaService {
             int totalDiasQuincena = 0;
             if (diaInicial <=15){
                 diaActual = diaInicial;
-                while (diaActual <=15){
-                    totalDiasQuincena++;
+                while (diaActual <=15 && totalDiasQuincena != acopio.size()){
                     diaActual = getDia(acopio.get(totalDiasQuincena));
+                    totalDiasQuincena++;
                 }
             }else{
                 diaActual = diaInicial;
-                while (diaActual != 1){
-                    totalDiasQuincena++;
+                while (diaActual <=31 && diaActual > 15 && totalDiasQuincena != acopio.size()){
                     diaActual = getDia(acopio.get(totalDiasQuincena));
+                    totalDiasQuincena++;
                 }
             }
             return totalDiasQuincena;
@@ -69,6 +71,7 @@ public class    PlanillaService {
         }
         return salida;
     }
+
 
     public void calcularQuincenas(){
         ArrayList<AcopioEntity> acopio = acopioService.obtenerAcopio();
@@ -89,7 +92,7 @@ public class    PlanillaService {
             quincenaActual = acopioPorQuincena(acopio,ultimoIndice);
             for (int i = 0; i < proveedores.size(); i++) {
                 PlanillaEntity planillaActual = new PlanillaEntity();
-                //planillaActual.setQuincena(setQuincenaString(quincenaActual.get(0).getFecha()));
+                planillaActual.setQuincena(setQuincenaString(quincenaActual.get(0).getFecha()));
                 planillaActual.setCodigo(proveedores.get(i).getCodigo());
                 planillaActual.setNombre(proveedores.get(i).getNombre());
                 planillaActual.setTotalDias(totalDiasLeche(proveedores.get(i).getCodigo(),quincenaActual));
@@ -108,7 +111,7 @@ public class    PlanillaService {
                         planillaActual.getPagoGrasa() +
                         planillaActual.getPagoSolidos() +
                         planillaActual.getBonificacionFrecuencia());
-                //planillaActual = descuentoVariaciones(planillaActual,planillas);
+                planillaActual = descuentoVariaciones(planillaActual,planillas);
                 planillaActual.setPagoTotal(planillaActual.getPagoAcopioLeche() -
                         planillaActual.getDctoVariacionLeche() -
                         planillaActual.getDctoVariacionGrasa() -
@@ -240,9 +243,9 @@ public class    PlanillaService {
             if (aux >= 0 && aux < 9){
                 return 0;
             } else if (aux >= 9 && aux < 26) {
-                return 0.12 * pagoTotal;
-            } else if (aux >= 26 && aux < 41) {
-                return 0.2 * pagoTotal;
+                return 0.07 * pagoTotal;
+            } else if (aux >= 26 && aux < 46) {
+                return 0.15 * pagoTotal;
             } else {
                 return 0.3 * pagoTotal;
             }
