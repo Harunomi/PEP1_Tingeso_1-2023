@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class AcopioController {
     @Autowired
     private AcopioService acopioService;
+    private String defecto = "redirect:/";
 
     @GetMapping("/subirArchivoA")
     public String subirArchivo(){
@@ -34,7 +35,7 @@ public class AcopioController {
     public String vaciarAcopio(RedirectAttributes ms){
         acopioService.borrarTodo();
         ms.addFlashAttribute("mensaje1","Base de datos vaciada.");
-        return "redirect:/";
+        return defecto;
     }
 
     @GetMapping("/listaAcopio")
@@ -42,7 +43,7 @@ public class AcopioController {
         ArrayList<AcopioEntity> listaAcopio = acopioService.obtenerAcopio();
         if (listaAcopio.isEmpty()){
             ms.addFlashAttribute("mensaje2","La base de datos para acopio se encuentra vacia, suba un archivo primero");
-            return "redirect:/";
+            return defecto;
         }else{
             model.addAttribute("acopio",listaAcopio);
             return "listaAcopio";

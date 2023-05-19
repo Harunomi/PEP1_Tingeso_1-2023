@@ -18,6 +18,8 @@ public class GrasaSolidoController {
     @Autowired
     private GrasaSolidoService grasaSolidoService;
 
+    private String defecto = "redirect:/";
+
     @GetMapping("/subirArchivoG")
     public String subirArchivo(){
         return "subirArchivoG";
@@ -34,14 +36,14 @@ public class GrasaSolidoController {
     public String vaciarGrasaSolido(RedirectAttributes ms){
         grasaSolidoService.borrarTodo();
         ms.addFlashAttribute("mensaje3","Base de datos de Grasas y Solidos vaciada.");
-        return "redirect:/";
+        return defecto;
     }
     @GetMapping("/listaGrasaSolido")
     public String listaGrasaSolido(GrasaSolidoEntity grasaSolido, Model model,RedirectAttributes ms){
         ArrayList<GrasaSolidoEntity> listaGrasaSolido = grasaSolidoService.obtenergrasaSolidos();
         if (listaGrasaSolido.isEmpty()){
             ms.addFlashAttribute("mensaje4","La base de datos para Grasas y Solidos se encuentra vacia, suba un archivo primero");
-            return "redirect:/";
+            return defecto;
         }else{
             model.addAttribute("grasaSolido",listaGrasaSolido);
             return "listaGrasaSolido";

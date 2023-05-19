@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class PlanillaServiceTest {
+class PlanillaServiceTest {
     @Autowired
     PlanillaService planillaService;
 
@@ -21,7 +21,7 @@ public class PlanillaServiceTest {
     PlanillaRepository planillaRepository;
 
     @Test
-    public void borrarTodoTest(){
+    void borrarTodoTest(){
         PlanillaEntity planilla = new PlanillaEntity();
         planillaRepository.save(planilla);
         planillaService.borrarTodo();
@@ -31,7 +31,7 @@ public class PlanillaServiceTest {
     }
 
     @Test
-    public void obtenerPlanillaTest(){
+    void obtenerPlanillaTest(){
         PlanillaEntity planilla = new PlanillaEntity();
         planillaRepository.save(planilla);
         ArrayList<PlanillaEntity> lista = planillaService.obtenerPlanilla();
@@ -40,14 +40,14 @@ public class PlanillaServiceTest {
     }
 
     @Test
-    public void getDiaTest(){
+    void getDiaTest(){
         AcopioEntity acopio = new AcopioEntity();
         acopio.setFecha("2023/03/02");
         assertEquals(2,planillaService.getDia(acopio));
     }
 
     @Test
-    public void totalDiasQuincenaTest(){
+    void totalDiasQuincenaTest(){
         ArrayList<AcopioEntity> acopioList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             AcopioEntity acopio = new AcopioEntity();
@@ -58,14 +58,14 @@ public class PlanillaServiceTest {
     }
 
     @Test
-    public void setQuincenaStringTest(){
+    void setQuincenaStringTest(){
         String fecha = "2023/01/16";
         assertEquals("2023/01/2",planillaService.setQuincenaString(fecha));
 
     }
 
     @Test
-    public void totalKLSTest(){
+    void totalKLSTest(){
         ArrayList<AcopioEntity> acopioList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             AcopioEntity acopio = new AcopioEntity();
@@ -78,12 +78,12 @@ public class PlanillaServiceTest {
     }
 
     @Test
-    public void pagoPorCategoriaTest(){
+    void pagoPorCategoriaTest(){
         assertEquals(7000,planillaService.pagoPorCategoria(10,"A"));
     }
 
     @Test
-    public void totalDiasLecheTest(){
+    void totalDiasLecheTest(){
         ArrayList<AcopioEntity> acopioList = new ArrayList<>();
         //assertEquals(0,planillaService.totalDiasLeche("01",acopioList));
         for (int i = 0; i < 5; i++) {
@@ -95,7 +95,7 @@ public class PlanillaServiceTest {
     }
 
     @Test
-    public void obtenerGrasaTest(){
+    void obtenerGrasaTest(){
         ArrayList<GrasaSolidoEntity> grasaList = new ArrayList<>();
         GrasaSolidoEntity grasa = new GrasaSolidoEntity();
         grasa.setGrasa(35);
@@ -106,7 +106,7 @@ public class PlanillaServiceTest {
     }
 
     @Test
-    public void obtenerSTTest(){
+    void obtenerSTTest(){
         ArrayList<GrasaSolidoEntity> grasaList = new ArrayList<>();
         GrasaSolidoEntity grasa = new GrasaSolidoEntity();
         grasa.setSolido(444);
@@ -116,32 +116,32 @@ public class PlanillaServiceTest {
     }
 
     @Test
-    public void pagoGrasaTest(){
+    void pagoGrasaTest(){
         assertEquals(1200,planillaService.pagoGrasa(50,10));
     }
 
     @Test
-    public void pagoSTTest(){
+    void pagoSTTest(){
         assertEquals(900,planillaService.pagoST(20,10));
     }
 
     @Test
-    public void descuentoVariacionKLSTest(){
+    void descuentoVariacionKLSTest(){
         assertEquals(70,planillaService.descuentoVariacionKLS(-20,1000));
     }
 
     @Test
-    public void descuentoVariacionGrasaTest(){
+    void descuentoVariacionGrasaTest(){
         assertEquals(120,planillaService.descuentoVariacionGrasa(-20,1000));
     }
 
     @Test
-    public void descuentoVariacionST(){
+    void descuentoVariacionST(){
         assertEquals(270,planillaService.descuentoVariacionST(-13,1000));
     }
 
     @Test
-    public void calcularMontoRetencionTest(){
+    void calcularMontoRetencionTest(){
         assertEquals(130000,planillaService.calcularMontoRetencion(1000000,"Si"));
     }
 

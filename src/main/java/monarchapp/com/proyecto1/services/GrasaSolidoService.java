@@ -48,6 +48,7 @@ public class GrasaSolidoService {
                 grasaSolidoRepository.save(grasaSolidoEntity); //se guarda el objeto creado en la base de datos
 
             }
+            obj.close();
         }catch (FileNotFoundException e){
             throw new RuntimeException(e);
         }

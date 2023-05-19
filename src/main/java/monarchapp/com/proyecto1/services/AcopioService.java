@@ -48,6 +48,7 @@ public class AcopioService {
                 acopioRepository.save(acopioEntity); // se guarda el objeto creado en la base de datos
 
             }
+            obj.close();
         }catch (FileNotFoundException e){
             throw new RuntimeException(e);
         }
@@ -55,7 +56,6 @@ public class AcopioService {
     }
 
     public void borrarTodo(){
-
         acopioRepository.deleteAll();
     }
 

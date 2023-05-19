@@ -14,13 +14,14 @@ import java.util.ArrayList;
 public class PlanillaController {
     @Autowired
     PlanillaService planillaService;
+    private String defecto = "redirect:/";
 
     @GetMapping("/listaPlanilla")
     public String listaPlanilla(PlanillaEntity planilla, Model model, RedirectAttributes ms){
         ArrayList<PlanillaEntity> listaPlanilla = planillaService.obtenerPlanilla();
         if (listaPlanilla.isEmpty()){
             ms.addFlashAttribute("mensaje5","La base de datos de planilla se encuentra vacia.");
-            return "redirect:/";
+            return defecto;
         }else{
             model.addAttribute("planilla",listaPlanilla);
             return "listaPlanilla";
@@ -31,13 +32,13 @@ public class PlanillaController {
     public String vaciarPlanilla(RedirectAttributes ms){
         planillaService.borrarTodo();
         ms.addFlashAttribute("mensaje6","La base de datos de planilla fue vaciada");
-        return "redirect:/";
+        return defecto;
     }
 
     @GetMapping("/calcularPlanilla")
     public String calcularPlanilla(RedirectAttributes ms){
         planillaService.calcularQuincenas();
         ms.addFlashAttribute("mensaje7","Los calculos fueron realizados");
-        return "redirect:/";
+        return defecto;
     }
 }

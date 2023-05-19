@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
-public class GrasaSolidoServiceTest {
+    class GrasaSolidoServiceTest {
     @Autowired
     GrasaSolidoService grasaSolidoService;
 
@@ -18,7 +18,7 @@ public class GrasaSolidoServiceTest {
     GrasaSolidoRepository grasaSolidoRepository;
 
     @Test
-    public void borrarTodoTest(){
+    void borrarTodoTest(){
         GrasaSolidoEntity g1 = new GrasaSolidoEntity();
         grasaSolidoRepository.save(g1);
         grasaSolidoService.borrarTodo();
@@ -27,7 +27,7 @@ public class GrasaSolidoServiceTest {
     }
 
     @Test
-    public void obtenerGrasaSolidoTest(){
+    void obtenerGrasaSolidoTest(){
         GrasaSolidoEntity g1 = new GrasaSolidoEntity();
         grasaSolidoRepository.save(g1);
         ArrayList<GrasaSolidoEntity> lista = grasaSolidoService.obtenergrasaSolidos();

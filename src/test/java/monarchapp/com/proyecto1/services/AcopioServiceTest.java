@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class AcopioServiceTest {
+    class AcopioServiceTest {
     @Autowired
     AcopioService acopioService;
 
@@ -19,7 +19,7 @@ public class AcopioServiceTest {
     AcopioRepository acopioRepository;
 
     @Test
-    public void obtenerAcopioTest(){
+    void obtenerAcopioTest(){
         AcopioEntity a1 = new AcopioEntity();
         acopioRepository.save(a1);
         ArrayList<AcopioEntity> lista = acopioService.obtenerAcopio();
@@ -28,7 +28,7 @@ public class AcopioServiceTest {
     }
 
     @Test
-    public void borrarTodoTest(){
+    void borrarTodoTest(){
         AcopioEntity a1 = new AcopioEntity();
         acopioRepository.save(a1);
         AcopioEntity a2 = new AcopioEntity();
