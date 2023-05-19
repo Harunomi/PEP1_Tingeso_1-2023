@@ -7,11 +7,11 @@ import monarchapp.com.proyecto1.entities.ProveedorEntity;
 import monarchapp.com.proyecto1.repositories.PlanillaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import lombok.Generated;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import javax.annotation.processing.Generated;
 
 @Service
 public class    PlanillaService {
@@ -71,7 +71,6 @@ public class    PlanillaService {
         }
         return salida;
     }
-
 
     public void calcularQuincenas(){
         ArrayList<AcopioEntity> acopio = acopioService.obtenerAcopio();

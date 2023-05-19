@@ -3,6 +3,8 @@ package monarchapp.com.proyecto1.services;
 import monarchapp.com.proyecto1.entities.AcopioEntity;
 import monarchapp.com.proyecto1.entities.GrasaSolidoEntity;
 import monarchapp.com.proyecto1.entities.PlanillaEntity;
+import monarchapp.com.proyecto1.repositories.AcopioRepository;
+import monarchapp.com.proyecto1.repositories.GrasaSolidoRepository;
 import monarchapp.com.proyecto1.repositories.PlanillaRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,14 @@ class PlanillaServiceTest {
 
     @Autowired
     PlanillaRepository planillaRepository;
+
+    @Autowired
+    AcopioRepository acopioRepository;
+
+    @Autowired
+    GrasaSolidoRepository grasaSolidoRepository;
+
+
 
     @Test
     void borrarTodoTest(){
@@ -47,7 +57,7 @@ class PlanillaServiceTest {
     }
 
     @Test
-    void totalDiasQuincenaTest(){
+    void totalDiasQuincenaTestA(){
         ArrayList<AcopioEntity> acopioList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             AcopioEntity acopio = new AcopioEntity();
@@ -58,9 +68,45 @@ class PlanillaServiceTest {
     }
 
     @Test
-    void setQuincenaStringTest(){
+    void totalDiasQuincenaTestB(){
+        ArrayList<AcopioEntity> acopioList = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            AcopioEntity acopio = new AcopioEntity();
+            acopio.setFecha("2023/03/16");
+            acopioList.add(acopio);
+        }
+        assertEquals(3,planillaService.totalDiasQuincena(acopioList));
+    }
+
+    @Test
+    void totalDiasQuincenaTestC(){
+        ArrayList<AcopioEntity> acopioList = new ArrayList<>();
+        assertEquals(0,planillaService.totalDiasQuincena(acopioList));
+    }
+
+    @Test
+    void acopioPorQuincenaTest(){
+        ArrayList<AcopioEntity> list = new ArrayList<>();
+        AcopioEntity acopio = new AcopioEntity();
+        for (int i = 0; i < 3; i++) {
+            list.add(acopio);
+        }
+        ArrayList<AcopioEntity> listNueva = planillaService.acopioPorQuincena(list,1);
+        assertEquals(1,listNueva.size());
+
+    }
+
+    @Test
+    void setQuincenaStringTestA(){
         String fecha = "2023/01/16";
         assertEquals("2023/01/2",planillaService.setQuincenaString(fecha));
+
+    }
+
+    @Test
+    void setQuincenaStringTesB(){
+        String fecha = "2023/01/01";
+        assertEquals("2023/01/1",planillaService.setQuincenaString(fecha));
 
     }
 
@@ -78,8 +124,27 @@ class PlanillaServiceTest {
     }
 
     @Test
-    void pagoPorCategoriaTest(){
+    void pagoPorCategoriaTestA(){
         assertEquals(7000,planillaService.pagoPorCategoria(10,"A"));
+    }
+
+    @Test
+    void pagoPorCategoriaTestB(){
+        assertEquals(5500,planillaService.pagoPorCategoria(10,"B"));
+    }
+
+    @Test
+    void pagoPorCategoriaTestC(){
+        assertEquals(4000,planillaService.pagoPorCategoria(10,"C"));
+    }
+
+    @Test
+    void pagoPorCategoriaTestD(){
+        assertEquals(2500,planillaService.pagoPorCategoria(10,"D"));
+    }
+    @Test
+    void pagoPorCategoriaTestX(){
+        assertEquals(0,planillaService.pagoPorCategoria(10,"asdasd"));
     }
 
     @Test
@@ -102,7 +167,6 @@ class PlanillaServiceTest {
         grasa.setProveedor("001");
         grasaList.add(grasa);
         assertEquals(35,planillaService.obtenerGrasa(grasaList,"001"));
-
     }
 
     @Test
@@ -116,33 +180,234 @@ class PlanillaServiceTest {
     }
 
     @Test
-    void pagoGrasaTest(){
-        assertEquals(1200,planillaService.pagoGrasa(50,10));
+    void pagoGrasaTestA(){
+        assertEquals(300,planillaService.pagoGrasa(0,10));
     }
 
     @Test
-    void pagoSTTest(){
-        assertEquals(900,planillaService.pagoST(20,10));
+    void pagoGrasaTestB(){
+        assertEquals(800,planillaService.pagoGrasa(21,10));
     }
 
     @Test
-    void descuentoVariacionKLSTest(){
-        assertEquals(70,planillaService.descuentoVariacionKLS(-20,1000));
+    void pagoGrasaTestC(){
+        assertEquals(1200,planillaService.pagoGrasa(46,10));
     }
 
     @Test
-    void descuentoVariacionGrasaTest(){
-        assertEquals(120,planillaService.descuentoVariacionGrasa(-20,1000));
+    void pagoGrasaTestD(){
+        assertEquals(0,planillaService.pagoGrasa(123123,10));
     }
 
     @Test
-    void descuentoVariacionST(){
+    void pagoSTTestA(){
+        assertEquals(-1300,planillaService.pagoST(0,10));
+    }
+
+    @Test
+    void pagoSTTestB(){
+        assertEquals(-900,planillaService.pagoST(8,10));
+    }
+
+    @Test
+    void pagoSTTestC(){
+        assertEquals(900,planillaService.pagoST(19,10));
+    }
+
+    @Test
+    void pagoSTTestD(){
+        assertEquals(1500,planillaService.pagoST(36,10));
+    }
+
+    @Test
+    void pagoSTTestX(){
+        assertEquals(0,planillaService.pagoST(12321,10));
+    }
+
+    @Test
+    void descuentoVariacionKLSTestA(){
+        assertEquals(0,planillaService.descuentoVariacionKLS(-1,1000));
+    }
+
+    @Test
+    void descuentoVariacionKLSTestB(){
+        assertEquals(70,planillaService.descuentoVariacionKLS(-9,1000));
+    }
+
+    @Test
+    void descuentoVariacionKLSTestC(){
+        assertEquals(150,planillaService.descuentoVariacionKLS(-26,1000));
+    }
+    @Test
+    void descuentoVariacionKLSTestD(){
+        assertEquals(300,planillaService.descuentoVariacionKLS(-50,1000));
+    }
+
+    @Test
+    void descuentoVariacionKLSTestX(){
+        assertEquals(0,planillaService.descuentoVariacionKLS(1,1000));
+    }
+
+    @Test
+    void descuentoVariacionGrasaTestA(){
+        assertEquals(0,planillaService.descuentoVariacionGrasa(-1,1000));
+    }
+
+    @Test
+    void descuentoVariacionGrasaTestB(){
+        assertEquals(120,planillaService.descuentoVariacionGrasa(-16,1000));
+    }
+
+    @Test
+    void descuentoVariacionGrasaTestC(){
+        assertEquals(200,planillaService.descuentoVariacionGrasa(-26,1000));
+    }
+    @Test
+    void descuentoVariacionGrasaTestD(){
+        assertEquals(300,planillaService.descuentoVariacionGrasa(-42,1000));
+    }
+
+    @Test
+    void descuentoVariacionGrasaTestX(){
+        assertEquals(0,planillaService.descuentoVariacionGrasa(1,1000));
+    }
+
+    @Test
+    void descuentoVariacionSTA(){
+        assertEquals(0,planillaService.descuentoVariacionST(-4,1000));
+    }
+
+    @Test
+    void descuentoVariacionSTB(){
+        assertEquals(180,planillaService.descuentoVariacionST(-7,1000));
+    }
+
+    @Test
+    void descuentoVariacionSTC(){
         assertEquals(270,planillaService.descuentoVariacionST(-13,1000));
     }
+    @Test
+    void descuentoVariacionSTD(){
+        assertEquals(450,planillaService.descuentoVariacionST(-38,1000));
+    }
 
     @Test
-    void calcularMontoRetencionTest(){
+    void descuentoVariacionSTX(){
+        assertEquals(0,planillaService.descuentoVariacionST(11,1000));
+    }
+
+    @Test
+    void calcularMontoRetencionTestA(){
         assertEquals(130000,planillaService.calcularMontoRetencion(1000000,"Si"));
     }
+
+    @Test
+    void calcularMontoRetencionTestB(){
+        assertEquals(0,planillaService.calcularMontoRetencion(1000000,"No"));
+    }
+
+    @Test
+    void borrarQuincenaTest(){
+        ArrayList<AcopioEntity> acopio = new ArrayList<>();
+        AcopioEntity a = new AcopioEntity();
+        for (int i = 0; i < 3; i++) {
+            acopio.add(a);
+        }
+        ArrayList<AcopioEntity> resultado = planillaService.borrarQuincena(acopio,0);
+        assertEquals(2,resultado.size());
+    }
+
+    @Test
+    void bonificacionFrecuenciaTestA(){
+        ArrayList<AcopioEntity> lista = new ArrayList<>();
+        AcopioEntity acopio = new AcopioEntity();
+        acopio.setTurno("M");
+        acopio.setProveedor("01001");
+        AcopioEntity acopio2 = new AcopioEntity();
+        acopio2.setTurno("T");
+        acopio2.setProveedor("01001");
+        for (int i = 0; i < 6; i++) {
+            lista.add(acopio);
+            lista.add(acopio2);
+        }
+
+        assertEquals(200,planillaService.bonificacionFrecuencia(lista,"01001",1000));
+    }
+
+    @Test
+    void bonificacionFrecuenciaTestB(){
+        ArrayList<AcopioEntity> lista = new ArrayList<>();
+        AcopioEntity acopio = new AcopioEntity();
+        acopio.setTurno("M");
+        acopio.setProveedor("01001");
+        for (int i = 0; i < 12; i++) {
+            lista.add(acopio);
+        }
+
+        assertEquals(120,planillaService.bonificacionFrecuencia(lista,"01001",1000));
+    }
+
+    @Test
+    void bonificacionFrecuenciaTestC(){
+        ArrayList<AcopioEntity> lista = new ArrayList<>();
+        AcopioEntity acopio = new AcopioEntity();
+        acopio.setTurno("T");
+        acopio.setProveedor("01001");
+        for (int i = 0; i < 12; i++) {
+            lista.add(acopio);
+        }
+
+        assertEquals(80,planillaService.bonificacionFrecuencia(lista,"01001",1000));
+    }
+
+    @Test
+    void bonificacionFrecuenciaTestD(){
+        ArrayList<AcopioEntity> lista = new ArrayList<>();
+        AcopioEntity acopio = new AcopioEntity();
+        acopio.setTurno("T");
+        acopio.setProveedor("01001");
+        for (int i = 0; i < 4; i++) {
+            lista.add(acopio);
+        }
+
+        assertEquals(0,planillaService.bonificacionFrecuencia(lista,"01001",1000));
+    }
+
+    @Test
+    void descuentoVariacionesTestA(){
+        ArrayList<PlanillaEntity> planillas = new ArrayList<>();
+        PlanillaEntity planillaAnterior = new PlanillaEntity();
+        planillaAnterior.setTotalKLS(10000);
+        planillaAnterior.setPorcentajeGrasa(40);
+        planillaAnterior.setPorcentajeSolidos(34);
+        planillaAnterior.setCodigo("01001");
+        planillas.add(planillaAnterior);
+        PlanillaEntity planillaActual = new PlanillaEntity();
+        planillaActual.setCodigo("01001");
+        planillaActual.setTotalKLS(3000);
+        planillaActual.setPorcentajeGrasa(40);
+        planillaActual.setPorcentajeSolidos(20);
+        planillaActual = planillaService.descuentoVariaciones(planillaActual,planillas);
+        assertEquals(-70,planillaActual.getVariacionLeche());
+    }
+
+    @Test
+    void descuentoVariacionesTestB(){
+        ArrayList<PlanillaEntity> planillas = new ArrayList<>();
+        PlanillaEntity planillaAnterior = new PlanillaEntity();
+        planillaAnterior.setTotalKLS(10000);
+        planillaAnterior.setPorcentajeGrasa(40);
+        planillaAnterior.setPorcentajeSolidos(34);
+        planillaAnterior.setCodigo("01002");
+        planillas.add(planillaAnterior);
+        PlanillaEntity planillaActual = new PlanillaEntity();
+        planillaActual.setCodigo("01001");
+        planillaActual.setTotalKLS(3000);
+        planillaActual.setPorcentajeGrasa(40);
+        planillaActual.setPorcentajeSolidos(20);
+        planillaActual = planillaService.descuentoVariaciones(planillaActual,planillas);
+        assertEquals(0,planillaActual.getVariacionLeche());
+    }
+
 
 }
