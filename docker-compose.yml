@@ -11,8 +11,8 @@ services:
     ports:
       - 33060:3306
   app:
-    container_name: proyecto1
-    image: harunomi/proyecto1
+    container_name: pep1
+    image: harunomi/pep1
     ports:
       - "8090:8090"
     environment:
