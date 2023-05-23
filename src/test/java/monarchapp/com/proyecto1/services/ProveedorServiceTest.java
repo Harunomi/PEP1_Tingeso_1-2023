@@ -43,6 +43,16 @@ class ProveedorServiceTest {
 
     }
 
+    @Test
+    void borrarTodoTest(){
+        ProveedorEntity p1 = new ProveedorEntity();
+        proveedorRepository.save(p1);
+        proveedorService.borrarTodo();
+        ArrayList<ProveedorEntity> lista = proveedorRepository.findAll();
+        assertEquals(0,lista.size());
+        proveedorRepository.delete(p1);
+    }
+
 
 
 }
