@@ -23,7 +23,7 @@ services:
       - app2
       - app3
   app1:
-    container_name: pep1
+    container_name: proyecto1
     image: harunomi/pep1
     ports:
       - "8091:8090"
@@ -38,7 +38,7 @@ services:
       - mysql-db
 
   app2:
-    container_name: pep1
+    container_name: proyecto2
     image: harunomi/pep1
     ports:
       - "8092:8090"
@@ -53,7 +53,7 @@ services:
       - mysql-db
 
   app3:
-    container_name: pep1
+    container_name: proyecto3
     image: harunomi/pep1
     ports:
       - "8093:8090"
