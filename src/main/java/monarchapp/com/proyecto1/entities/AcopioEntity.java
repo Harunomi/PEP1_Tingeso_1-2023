@@ -17,7 +17,7 @@ public class AcopioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true,nullable = false)
     private Long id;
-    private String fecha;
+    private String fecha; // (AAA/MM/DD)
     private String turno;
     private String proveedor;
     private float kls;

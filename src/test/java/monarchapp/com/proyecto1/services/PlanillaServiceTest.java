@@ -3,9 +3,11 @@ package monarchapp.com.proyecto1.services;
 import monarchapp.com.proyecto1.entities.AcopioEntity;
 import monarchapp.com.proyecto1.entities.GrasaSolidoEntity;
 import monarchapp.com.proyecto1.entities.PlanillaEntity;
+import monarchapp.com.proyecto1.entities.ProveedorEntity;
 import monarchapp.com.proyecto1.repositories.AcopioRepository;
 import monarchapp.com.proyecto1.repositories.GrasaSolidoRepository;
 import monarchapp.com.proyecto1.repositories.PlanillaRepository;
+import monarchapp.com.proyecto1.repositories.ProveedorRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +29,9 @@ class PlanillaServiceTest {
 
     @Autowired
     GrasaSolidoRepository grasaSolidoRepository;
+
+    @Autowired
+    ProveedorRepository proveedorRepository;
 
 
 
@@ -407,6 +412,37 @@ class PlanillaServiceTest {
         planillaActual.setPorcentajeSolidos(20);
         planillaActual = planillaService.descuentoVariaciones(planillaActual,planillas);
         assertEquals(0,planillaActual.getVariacionLeche());
+    }
+
+    @Test
+    void calcularQuincenasTest(){
+        ProveedorEntity p1 = new ProveedorEntity();
+        p1.setCodigo("01001");
+        p1.setCategoria("A");
+        p1.setNombre("Proveedor1");
+        p1.setRetencion("Si");
+        proveedorRepository.save(p1);
+        GrasaSolidoEntity g1 = new GrasaSolidoEntity();
+        g1.setGrasa(60);
+        g1.setSolido(44);
+        g1.setProveedor("01001");
+        grasaSolidoRepository.save(g1);
+        AcopioEntity a1 = new AcopioEntity();
+        a1.setProveedor("01001");
+        a1.setFecha("2023/03/01");
+        a1.setKls(140);
+        a1.setTurno("M");
+        for (int i = 0; i < 11; i++) {
+            acopioRepository.save(a1);
+        }
+        planillaService.calcularQuincenas();
+        ArrayList<PlanillaEntity> resultado = (ArrayList<PlanillaEntity>) planillaRepository.findAll();
+        assertEquals(1,resultado.size());
+        proveedorRepository.delete(p1);
+        grasaSolidoRepository.delete(g1);
+        acopioRepository.deleteAll();
+        planillaRepository.deleteAll();
+
     }
 
 
