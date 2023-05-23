@@ -20,4 +20,8 @@ public class ProveedorService {
         proveedorRepository.save(proveedor);
     }
 
+    public void borrarTodo(){
+        proveedorRepository.deleteAll();
+    }
+
 }

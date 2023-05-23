@@ -17,19 +17,25 @@
         <div class="form-row">
           <div class="form-group col-md-6">
             <lavel >Codigo</lavel>
-            <input th:field="*{codigo}" th:value="*{codigo}"type="text" class="form-control" placeholder="Codigo">
+            <input th:field="*{codigo}" th:value="*{codigo}"type="text" class="form-control" placeholder="Codigo" required>
           </div>
           <div class="form-group col-md-6">
             <lavel>Nombre</lavel>
-            <input th:field="*{nombre}" th:value="*{nombre}" type="text" class="form-control" placeholder="Nombre">
+            <input th:field="*{nombre}" th:value="*{nombre}" type="text" class="form-control" placeholder="Nombre" required>
           </div>
           <div class="form-group col-md-6">
             <lavel>Categoria</lavel>
-            <input th:field="*{categoria}" th:value="*{categoria}" type="text" class="form-control" placeholder="Categoria">
+            <select class="form-select" aria-label="Categoria" name="categoria" th:field="*{categoria}" th:value="*{categoria}" required>
+              <option selected th:value="*{categoria}">Haga click aqui para seleccionar una opcion</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+              <option value="D">D</option>
+            </select>
           </div>
           <div class="form-group col-md-6">
             <lavel>Retencion</lavel>
-            <select class="form-select" aria-label="Retencion" name="retencion" th:field="*{retencion}" th:value="*{retencion}">
+            <select class="form-select" aria-label="Retencion" name="retencion" th:field="*{retencion}" th:value="*{retencion}" required>
               <option selected th:value="*{retencion}">Haga click aqui para seleccionar una opcion</option>
               <option value="Si">Si</option>
               <option value="No">No</option>
@@ -37,7 +43,7 @@
           </div>
         </div>
         <div>
-          <button type="submit" class="btn btn-primary">Enviar</button>
+          <button type="submit" class="btn btn-primary" th:disabled="${#fields.hasErrors()}">Enviar</button>
         </div>
       </form>
     </div>

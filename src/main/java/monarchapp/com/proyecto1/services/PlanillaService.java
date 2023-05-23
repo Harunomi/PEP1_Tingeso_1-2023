@@ -77,7 +77,7 @@ public class    PlanillaService {
         ArrayList<GrasaSolidoEntity> grasaSolido = grasaSolidoService.obtenergrasaSolidos();
         ArrayList<ProveedorEntity> proveedores = proveedorService.obtenerProveedores();
         ArrayList<AcopioEntity> quincenaActual;
-        ArrayList<PlanillaEntity> planillas = new ArrayList<  >();
+        ArrayList<PlanillaEntity> planillas = (ArrayList<PlanillaEntity>) planillaRepository.findAll();
         while(!(acopio.isEmpty())){
             /*
             la logica del programa corresponde a: en primer lugar revisamos el indice del ultimo
